@@ -31,13 +31,7 @@ h1{
 .input-item{
     position: relative;
     display: flex;
-    /* align-items: flex-start; */
-    /* margin-right: 25px; */
 }
-/* .input-item label{
-    font-weight: bold;
-    margin-bottom: 10px;
-} */
 .input-item input{
     padding: 15px;
     border: #6e3003 1px solid;
