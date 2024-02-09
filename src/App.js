@@ -1,33 +1,45 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect ,useState } from 'react';
 import './App.css';
 import { MdDelete } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
+import {useDispatch, useSelector } from 'react-redux';
+import { addTodo,deleteTodo,completeTodo,deleteCompletedTodo } from './redux/actions';
 
 function App() {
-	const [isCompleteScreen,setIsCompleteScreen]=useState(false);
-	const [allTodos,setTodos]=useState([]);
-	const [newTitle,setNewTitle]=useState("");
-	const [newDescription,setNewDescription]=useState("");
-	const [completedTodos,setCompletedTodos]=useState([]);
+	const dispatch=useDispatch();
+	const [newTitle,setNewTitle]=useState('');
+	const [newDescription,setNewDescription]=useState('');
+	const [isCompleteScreen,setIsCompleteScreen]=useState('');
+	const allTodos=useSelector(state=>state.todos);
+	const completedTodos=useSelector(state=>state.completedtodos)
+	
+	useEffect(()=>{
+		const savedTodo=JSON.parse(localStorage.getItem('todolist'));
+		const savedCompletedTodo=JSON.parse(localStorage.getItem('completedTodo'));
+		if(savedTodo){
+			dispatch({type:'ADD_TODO',payload:savedTodo})
+		}
+		if(savedCompletedTodo){
+			dispatch({type:'COMPLETE_TODO',payload:savedCompletedTodo})
+		}
+	},[dispatch]);
+
 	const handleAddTodo=(event)=>{
 		event.preventDefault();
 		let newTodoItem={
 			title:newTitle,
 			description:newDescription
 		}
-		let updatedTodoArr=[...allTodos];
-		updatedTodoArr.push(newTodoItem);
-		setTodos(updatedTodoArr);
-		localStorage.setItem('todolist',JSON.stringify(updatedTodoArr));
+		dispatch(addTodo(newTodoItem));
+		localStorage.setItem('todolist',JSON.stringify([...allTodos,newTodoItem]));
 		setNewTitle('');
 		setNewDescription('');
 	};
+
 	const handleDeleteTodo=(index)=>{
-		let reducedTodo=[...allTodos];
-		reducedTodo.splice(index,1);
-		localStorage.setItem('todolist',JSON.stringify(reducedTodo));
-		setTodos(reducedTodo);
+		dispatch(deleteTodo(index));
 	};
+
 	const handleComplete=(index)=>{
 		let now=new Date();
 		let dd=now.getDate();
@@ -37,35 +49,12 @@ function App() {
 		let m=now.getMinutes();
 		let s=now.getSeconds();
 		let completedOn = dd + '/' + mm + '/' + yyyy + ' at' + h +':' + m +':' + s;
-		let filteredItem ={
-			...allTodos[index],
-			completedOn:completedOn
+		dispatch(completeTodo(index,completedOn));
 		};
 
-		let updatedCompletedArr =[...completedTodos];
-		updatedCompletedArr.push(filteredItem);
-		setCompletedTodos(updatedCompletedArr);
-		handleDeleteTodo(index);
-		localStorage.setItem('completedTodos',JSON.stringify(updatedCompletedArr));
-	};
-
 	const handleDeleteCompletedTodo = (index)=>{
-		let reducedTodo=[...completedTodos];
-		reducedTodo.splice(index,1);
-		localStorage.setItem('completedTodos',JSON.stringify(reducedTodo));
-		setCompletedTodos(reducedTodo);
+		dispatch(deleteCompletedTodo(index));
 	};
-
-	useEffect(()=>{
-		let savedTodo=JSON.parse(localStorage.getItem('todolist'));
-		let savedCompletedTodo=JSON.parse(localStorage.getItem('completedTodo'));
-		if(savedTodo){
-			setTodos(savedTodo);
-		}
-		if(savedCompletedTodo){
-			setCompletedTodos(savedCompletedTodo);
-		}
-	},[]);
 
   	return (
     	<div className="App">
