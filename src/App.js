@@ -3,7 +3,7 @@ import './App.css';
 import { MdDelete } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
 import {useDispatch, useSelector } from 'react-redux';
-import { addTodo,deleteTodo,completeTodo,deleteCompletedTodo } from './redux/actions';
+import { addTodo,deleteTodo,completeTodo,deleteCompletedTodo} from './redux/actions';
 
 function App() {
 	const dispatch=useDispatch();
@@ -58,7 +58,7 @@ function App() {
 
   	return (
     	<div className="App">
-      		<h1>What TO DO?</h1>
+      		<h1>WHAT TO DO?</h1>
       		<div  className='todo-wrapper'>
         		<div className='todo-input'>
 					<form>

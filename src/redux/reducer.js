@@ -1,6 +1,6 @@
 const initialState={
     todos:[],
-    completedtodos:[]
+    completedtodos:[],
 }
 
 const rootReducer=(state=initialState, action)=>{
