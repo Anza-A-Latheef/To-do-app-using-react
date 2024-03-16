@@ -3,38 +3,23 @@ import './App.css';
 import { MdDelete } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
 import {useSelector } from 'react-redux';
-import { useAdd } from './hooks/useAdd';
+import { useAdd} from './hooks/useAdd';
 import { useDelete } from './hooks/useDelete';
 import { useComplete } from './hooks/useComplete';
 import { useDeleteCompleted } from './hooks/useDeleteCompleted';
-import Test from './test';
-function App() {
-	const [newTitle,setNewTitle, newDescription,setNewDescription,handleAddTodo,allTodos]=useAdd();
+
+
+const Test = () => {
+    const [allTodos]=useAdd();
 	const [handleComplete]=useComplete();
 	const [handleDeleteTodo]=useDelete();
 	const [handleDeleteCompletedTodo]=useDeleteCompleted();
 	const [isCompleteScreen,setIsCompleteScreen]=useState('');
 	const completedTodos=useSelector(state=>state.completedtodos)
 
-  	return (
-    	<div className="App">
-      		<h1>WHAT TO DO?</h1>
-      		<div  className='todo-wrapper'>
-        		<div className='todo-input'>
-					<form>
-						<div className='input-item'>
-							<input type="text" value={newTitle} onChange={(e)=>setNewTitle(e.target.value)} required="required"/>
-							<p>Title</p>
-						</div>
-						<div className='input-item'>
-							<input type="text" value={newDescription} onChange={(e)=>setNewDescription(e.target.value)} required="required"/>
-							<p>Description</p>
-						</div>
-            			<button type='submit' onClick={handleAddTodo} className='primaryBtn'>Add Task</button>
-					</form>
-        		</div>
-				<Test/>
-				{/* <div className='tab-area'>
+  return (
+      		<>
+				<div className='tab-area'>
 					<button className={`secondaryBtn ${isCompleteScreen===false && 'active'}`} onClick={()=>setIsCompleteScreen(false)}>To be Done</button>
 					<button className={`secondaryBtn ${isCompleteScreen===true && 'active'}`}  onClick={()=>setIsCompleteScreen(true)}>Already Done</button>
 				</div>
@@ -67,10 +52,9 @@ function App() {
 							</div>
 						)
 					})}
-				</div> */}
-      		</div>
-    	</div>
-  	);
+				</div>
+      		</>
+  )
 }
 
-export default App;
+export default Test
